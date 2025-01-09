@@ -3,7 +3,6 @@ import {
   generateLinkController,
   shareContentController,
 } from "../controllers/share-controller";
-import { verify } from "crypto";
 import verifyToken from "../middleware/verifyToken";
 
 const router = express.Router();
