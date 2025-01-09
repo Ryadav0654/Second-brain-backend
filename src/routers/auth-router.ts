@@ -4,6 +4,7 @@ import {
   signupController,
   logoutController,
 } from "../controllers/auth-controller";
+import verifyToken from "../middleware/verifyToken";
 const router = express.Router();
 
 // interface User {
@@ -15,6 +16,6 @@ const router = express.Router();
 
 router.post("/signin", signinController);
 router.post("/signup", signupController);
-router.post("/logout", logoutController);
+router.post("/logout", verifyToken, logoutController);
 
 export default router;

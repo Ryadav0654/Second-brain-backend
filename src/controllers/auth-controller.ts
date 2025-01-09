@@ -2,11 +2,12 @@ import { Request, Response } from "express";
 import { z } from "zod";
 import { User } from "../models/userSchema";
 import { asyncHandler } from "../utils/AsyncHandler";
-
+import { CustomRequest } from "../middleware/verifyToken";
 const userZodSchema = z.object({
   username: z
     .string()
     .toLowerCase()
+    .trim()
     .min(3, { message: "Username must be 5 or more characters long" })
     .max(10, { message: "Username must be 5 or fewer characters long" })
     .regex(/^[a-z0-9]{6,20}$/, {
@@ -140,17 +141,20 @@ const signinController = asyncHandler(async (req: Request, res: Response) => {
 });
 const logoutController = asyncHandler(async (req: Request, res: Response) => {
   try {
-    // await User.findByIdAndUpdate(
-    //     req.user._id,
-    //     {
-    //         $unset: {
-    //             refreshToken: 1 // this removes the field from document
-    //         }
-    //     },
-    //     {
-    //         new: true
-    //     }
-    // )
+    const user = (req as CustomRequest).user as { user_id: string };
+    console.log("req.user", user.user_id);
+    await User.findByIdAndUpdate(
+      user.user_id,
+      {
+        $unset: {
+          refreshToken: 1, // this removes the field from document
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
     const options = {
       httpOnly: true,
       secure: true,

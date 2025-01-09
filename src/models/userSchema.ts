@@ -1,6 +1,5 @@
 import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
-import { string } from "zod";
 import jwt from "jsonwebtoken";
 
 interface IUser {
