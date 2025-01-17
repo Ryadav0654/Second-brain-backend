@@ -5,7 +5,7 @@ import { Content } from "../models/contentSchema";
 import { CustomRequest } from "../middleware/verifyToken";
 
 const contentZodSchema = z.object({
-  type: z.enum(["document", "tweet", "youtube", "link"]),
+  type: z.enum(["Document", "Tweet", "Youtube", "Link", "Blog", "Question"]),
   title: z.string(),
   link: z.string(),
   tags: z.array(z.string()).optional(),
@@ -13,12 +13,13 @@ const contentZodSchema = z.object({
 
 const addNewContent = asyncHandler(async (req: Request, res: Response) => {
   try {
+    console.log(req.body);
     const { success, data, error } = await contentZodSchema.safeParseAsync(
       req.body
     );
     const user = (req as CustomRequest).user as { user_id: string };
     // console.log("addnewContent success", success);
-    // console.log("addnewContent data", data);
+    console.log("addnewContent data", data);
     // console.log("addnewContent error", error);
 
     if (!success) {

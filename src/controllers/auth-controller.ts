@@ -139,6 +139,23 @@ const signinController = asyncHandler(async (req: Request, res: Response) => {
     return res.status(500).json({ error: error });
   }
 });
+const getUser = asyncHandler(async (req: Request, res: Response) => {
+  try {
+    const user = (req as CustomRequest).user as { user_id: string };
+    console.log("req.user", user.user_id);
+    const userData = await User.findById(user.user_id).select(
+      "-password -refreshToken"
+    );
+    if (!userData) {
+      return res
+        .status(403)
+        .json({ message: "User does not exist with this username" });
+    }
+    return res.status(200).json({ data: userData });
+  } catch (error) {
+    return res.status(500).json({ error: error });
+  }
+});
 const logoutController = asyncHandler(async (req: Request, res: Response) => {
   try {
     const user = (req as CustomRequest).user as { user_id: string };
@@ -168,4 +185,4 @@ const logoutController = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-export { signinController, signupController, logoutController };
+export { signinController, signupController, logoutController, getUser };
