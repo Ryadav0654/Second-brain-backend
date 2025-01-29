@@ -9,11 +9,7 @@ const userZodSchema = z.object({
     .toLowerCase()
     .trim()
     .min(3, { message: "Username must be 5 or more characters long" })
-    .max(10, { message: "Username must be 5 or fewer characters long" })
-    .regex(/^[a-z0-9]{6,20}$/, {
-      message:
-        "Username must not contain special characters or uppercase letters",
-    }),
+    .max(10, { message: "Username must be 5 or fewer characters long" }),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long" })
