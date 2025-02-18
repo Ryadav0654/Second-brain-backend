@@ -53,7 +53,7 @@ const signupController = asyncHandler(async (req: Request, res: Response) => {
     const { success, data, error } = await userZodSchema.safeParseAsync(
       req.body
     );
-    console.log("success, data, error", success, data, error);
+    // console.log("success, data, error", success, data, error);
 
     if (!success) {
       return res.status(411).json({ message: error.errors[0].message });
@@ -91,7 +91,7 @@ const signinController = asyncHandler(async (req: Request, res: Response) => {
     const { success, data, error } = await userZodSchema.safeParseAsync(
       req.body
     );
-    console.log("success, data, error", success, data, error);
+    // console.log("success, data, error", success, data, error);
 
     if (!success) {
       res.status(411).json({ message: error.errors[0].message });
@@ -138,7 +138,7 @@ const signinController = asyncHandler(async (req: Request, res: Response) => {
 const getUser = asyncHandler(async (req: Request, res: Response) => {
   try {
     const user = (req as CustomRequest).user as { user_id: string };
-    console.log("req.user", user.user_id);
+    // console.log("req.user", user.user_id);
     const userData = await User.findById(user.user_id).select(
       "-password -refreshToken"
     );
@@ -155,7 +155,7 @@ const getUser = asyncHandler(async (req: Request, res: Response) => {
 const logoutController = asyncHandler(async (req: Request, res: Response) => {
   try {
     const user = (req as CustomRequest).user as { user_id: string };
-    console.log("req.user", user.user_id);
+    // console.log("req.user", user.user_id);
     await User.findByIdAndUpdate(
       user.user_id,
       {

@@ -13,13 +13,13 @@ const contentZodSchema = z.object({
 
 const addNewContent = asyncHandler(async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     const { success, data, error } = await contentZodSchema.safeParseAsync(
       req.body
     );
     const user = (req as CustomRequest).user as { user_id: string };
     // console.log("addnewContent success", success);
-    console.log("addnewContent data", data);
+    // console.log("addnewContent data", data);
     // console.log("addnewContent error", error);
 
     if (!success) {
@@ -30,7 +30,7 @@ const addNewContent = asyncHandler(async (req: Request, res: Response) => {
     if (!newContent) {
       return res.status(500).json({ message: "Error to add new content" });
     }
-    console.log("newContent", newContent);
+    // console.log("newContent", newContent);
     return res.status(201).json({ message: "Content added successfully" });
   } catch (error) {
     return res

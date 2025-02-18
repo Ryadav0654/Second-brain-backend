@@ -29,7 +29,7 @@ const generateLinkController = asyncHandler(
         shareId: shareId,
         userId: user_id,
       });
-      console.log("link", link);
+      // console.log("link", link);
       if (!link) {
         return res.status(500).json({ message: "Error to create link" });
       }
@@ -41,7 +41,7 @@ const generateLinkController = asyncHandler(
       const linkDeleted = await Link.deleteOne({
         userId: user_id,
       });
-      console.log("deleted", linkDeleted);
+      // console.log("deleted", linkDeleted);
 
       if (!linkDeleted.acknowledged) {
         return res.status(500).json({ message: "Error to delete link" });
