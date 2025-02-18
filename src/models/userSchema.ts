@@ -1,7 +1,10 @@
 import { Schema, model } from "mongoose";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+const accessTokenSecret: string = process.env.ACCESS_TOKEN_SECRET || "";
+const refreshTokenSecret: string = process.env.REFRESH_TOKEN_SECRET || "";
+const expiresIn: string = process.env.ACCESS_TOKEN_EXPIRY || "1h";
 interface IUser {
   username: string;
   password: string;
@@ -46,20 +49,19 @@ userSchema.methods.comparePassword = async function (
   return await bcrypt.compare(candidatePassword, this.password);
 };
 userSchema.methods.generateAccessToken = function () {
-  if (!process.env.ACCESS_TOKEN_SECRET) {
+  if (!accessTokenSecret) {
     throw new Error("ACCESS_TOKEN_SECRET is not defined");
   }
-  return jwt.sign({ user_id: this._id }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
-  });
+  //@ts-ignore
+  return jwt.sign({ user_id: this._id }, accessTokenSecret, { expiresIn });
 };
+
 userSchema.methods.generateRefreshToken = function () {
-  if (!process.env.REFRESH_TOKEN_SECRET) {
+  if (!refreshTokenSecret) {
     throw new Error("REFRESH_TOKEN_SECRET is not defined");
   }
-  return jwt.sign({ user_id: this._id }, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
-  });
+  //@ts-ignore
+  return jwt.sign({ user_id: this._id }, refreshTokenSecret, { expiresIn });
 };
 
 const User = model<IUser>("User", userSchema);
