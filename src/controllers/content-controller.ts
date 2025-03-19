@@ -86,4 +86,25 @@ const deleteContent = asyncHandler(async (req: Request, res: Response) => {
   }
 });
 
-export { addNewContent, getAllContent, deleteContent };
+const getContentbyType = asyncHandler(async (req: Request, res: Response) => {
+  try {
+    const { type } = req.query;
+    const user = (req as CustomRequest).user as { user_id: string };
+
+    const contents = await Content.find({
+      userId: user.user_id,
+      type: type,
+    }).populate("userId", "username");
+
+    if (!contents) {
+      return res.status(500).json({ message: "Error to get contents" });
+    }
+    return res.status(200).json({ contents });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ error: error, message: "Something went wrong" });
+  }
+});
+
+export { addNewContent, getAllContent, deleteContent, getContentbyType };
