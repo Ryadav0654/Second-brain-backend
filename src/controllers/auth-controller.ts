@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, CookieOptions } from "express";
 import { z } from "zod";
 import { User } from "../models/userSchema";
 import { asyncHandler } from "../utils/AsyncHandler";
@@ -123,7 +123,7 @@ const signinController = asyncHandler(async (req: Request, res: Response) => {
       return;
     }
     const { accessToken } = generatedTokens;
-    const options = {
+    const options: CookieOptions = {
       httpOnly: true,
       secure: true,
       sameSite: "none",
@@ -170,7 +170,7 @@ const logoutController = asyncHandler(async (req: Request, res: Response) => {
       }
     );
 
-    const options = {
+    const options: CookieOptions = {
       httpOnly: true,
       secure: true,
       sameSite: "none",
