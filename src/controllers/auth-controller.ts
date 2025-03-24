@@ -171,6 +171,8 @@ const logoutController = asyncHandler(async (req: Request, res: Response) => {
     const options = {
       httpOnly: true,
       secure: true,
+      sameSite: "none",
+      maxAge: 24 * 60 * 60 * 1000,
     };
     return res
       .status(201)
